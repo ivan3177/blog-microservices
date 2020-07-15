@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: ivan3177/blog-client
+      context: client
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+    - image: ivan3177/blog-posts
+      context: posts
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: ivan3177/blog-comments
+      context: comments
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: ivan3177/blog-query
+      context: query
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: ivan3177/blog-moderation
+      context: moderation
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: ivan3177/blog-event-bus
+      context: event-bus
+      docker:
+        dockerfile: dev.Dockerfile
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
